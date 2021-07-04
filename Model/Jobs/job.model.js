@@ -1,7 +1,7 @@
-const MONGOOSE = require("mongoose");
-const SCHEMA = MONGOOSE.Schema;
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 
-var jobSchema=new SCHEMA({
+var jobSchema=new Schema({
     jobName:{
         type:String,
         require:true
@@ -12,4 +12,4 @@ var jobSchema=new SCHEMA({
     },
     tags:[String]
 })
-module.exports = mongoose.model('job', jobSchema);
+module.exports = Mongoose.model('job', jobSchema);

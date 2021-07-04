@@ -1,7 +1,7 @@
-const MONGOOSE = require("mongoose");
-const SCHEMA = MONGOOSE.Schema;
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 
-var emailSchema=new SCHEMA({
+var emailSchema=new Schema({
     email:{
         type:String,
         required:true
@@ -14,4 +14,4 @@ var emailSchema=new SCHEMA({
 {
     timestamps:true
 })
-module.exports = mongoose.model('email', emailSchema);
+module.exports = Mongoose.model('email', emailSchema);

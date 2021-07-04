@@ -1,13 +1,13 @@
-const MONGOOSE = require("mongoose");
-const SCHEMA = MONGOOSE.Schema;
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 
-let manpowerSchema=new SCHEMA({
+let manpowerSchema=new Schema({
     user:{
-        type:SCHEMA.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"user"
     },
     servicesProvided:{
-        type:SCHEMA.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"tasksHistory"
     },
     citizenshipImage:String,
@@ -23,8 +23,8 @@ let manpowerSchema=new SCHEMA({
         type:String
     },
     availableJobs:{
-        type:SCHEMA.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:'availableJob'
     }
 })
-module.exports = mongoose.model('manpower', manpowerSchema);
+module.exports = Mongoose.model('manpower', manpowerSchema);

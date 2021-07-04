@@ -1,5 +1,5 @@
-const MONGOOSE = require("mongoose");
-const SCHEMA = MONGOOSE.Schema;
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 
 let reviewSchema=new SCHEMA({
     reviewer:{
@@ -13,4 +13,4 @@ let reviewSchema=new SCHEMA({
         max:5
     },
 })
-module.exports = mongoose.model('review', reviewSchema);
+module.exports = Mongoose.model('review', reviewSchema);

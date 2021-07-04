@@ -1,15 +1,15 @@
-const MONGOOSE = require("mongoose");
-const SCHEMA = MONGOOSE.Schema;
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 
-let clientSchema=new SCHEMA({
+let clientSchema=new Schema({
     user:{
-        type:SCHEMA.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"user"
     },
     servicesReceived:[{
-        type:SCHEMA.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"task"
     }],
     location:[String],
 })
-module.exports = mongoose.model('client', clientSchema);
+module.exports = Mongoose.model('client', clientSchema);

@@ -1,8 +1,8 @@
 
-const MONGOOSE = require("mongoose");
-const SCHEMA = MONGOOSE.Schema;
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 
-let userSchema = new SCHEMA(
+let userSchema = new Schema(
   {
     userName: {
       unique: true,
@@ -24,11 +24,11 @@ let userSchema = new SCHEMA(
       }
     },
     primaryContactNumber: {
-      type:SCHEMA.Types.ObjectId,
+      type:Schema.Types.ObjectId,
       ref:"contactNumber"
     },
     contactNumbers:[{
-      type:SCHEMA.Types.ObjectId,
+      type:Schema.Types.ObjectId,
       ref:"contactNumber"
     }],
     gender: {
@@ -55,5 +55,5 @@ let userSchema = new SCHEMA(
     timestamps: true
   }
 );
-const userModel = MONGOOSE.model("user", userSchema);
+const userModel = Mongoose.model("user", userSchema);
 module.exports = userModel;

@@ -1,7 +1,7 @@
 const MONGOOSE = require("mongoose");
 const SCHEMA = MONGOOSE.Schema;
 
-let taskHistorySchema=new SCHEMA({
+let serviceHistory=new SCHEMA({
     job:{
         type:SCHEMA.Types.ObjectId,
         ref:'job'
@@ -23,4 +23,4 @@ let taskHistorySchema=new SCHEMA({
         ref:"review"
     }
 })
-module.exports = mongoose.model('taskHistory', taskHistorySchema);
+module.exports = mongoose.model('serviceHistory', serviceHistory);
