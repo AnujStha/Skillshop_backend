@@ -1,8 +1,8 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 
-var contactNumberSchema=new Mongoose.Schema({
-    email:{
+var contactNumberSchema=new Schema({
+    number:{
         type:String,
         required:true
     },
@@ -19,4 +19,5 @@ var contactNumberSchema=new Mongoose.Schema({
 {
     timestamps:true
 })
-module.exports = Mongoose.model('contactNumber', contactNumberSchema);
+const contactNumber=Mongoose.model('contactNumber', contactNumberSchema);
+module.exports = contactNumber;

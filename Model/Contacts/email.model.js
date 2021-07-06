@@ -14,4 +14,5 @@ var emailSchema=new Schema({
 {
     timestamps:true
 })
-module.exports = Mongoose.model('email', emailSchema);
+const emailModel=Mongoose.model('email', emailSchema);
+module.exports = emailModel

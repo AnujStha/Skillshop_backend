@@ -6,26 +6,24 @@ let userSchema = new Schema(
   {
     userName: {
       unique: true,
-      required: true,
+      require: true,
       type: String
     },
     firstName: String,
+    middleName:String,
     lastName: String,
     password: {
       required: true,
       type: String
     },
-    address: {
-      permanentAddress: {
-        type: String
-      },
-      tempAddress: {
-        type: Array
-      }
+    permanentAddress: {
+      type: String
     },
+    tempAddress: [String],
     primaryContactNumber: {
       type:Schema.Types.ObjectId,
-      ref:"contactNumber"
+      ref:"contactNumber",
+      require:true
     },
     contactNumbers:[{
       type:Schema.Types.ObjectId,
@@ -33,7 +31,8 @@ let userSchema = new Schema(
     }],
     gender: {
       type: String,
-      enum: ["male", "female", "others"]
+      enum: ["male", "female", "others","notSpecified"],
+      default:"notSpecified"
     },
     email: {
       type: String,

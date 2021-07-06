@@ -10,6 +10,7 @@ let clientSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:"task"
     }],
-    location:[String],
+    availableLocation:[String],
 })
-module.exports = Mongoose.model('client', clientSchema);
+const ClientModel=Mongoose.model('client', clientSchema);
+module.exports = ClientModel;

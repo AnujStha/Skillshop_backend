@@ -27,4 +27,5 @@ let manpowerSchema=new Schema({
         ref:'availableJob'
     }
 })
-module.exports = Mongoose.model('manpower', manpowerSchema);
+const ManpowerModel=Mongoose.model('manpower', manpowerSchema);
+module.exports = ManpowerModel;
