@@ -19,13 +19,11 @@ let manpowerSchema=new Schema({
         type:String,
         enum:['available','busy','unavailable']
     },
-    availableLocations:{
-        type:String
-    },
-    availableJobs:{
+    availableLocations:[String],
+    availableJobs:[{
         type:Schema.Types.ObjectId,
         ref:'availableJob'
-    }
+    }]
 })
 const ManpowerModel=Mongoose.model('manpower', manpowerSchema);
 module.exports = ManpowerModel;

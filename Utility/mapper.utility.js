@@ -6,10 +6,21 @@ async function map_client_request(client,data){
     try {
         let clientUser=new User({});
         let mappedClientUser=await(map_user_request(clientUser,data))
-        console.log("user"+mappedClientUser)
         await(mappedClientUser.save())
         client.user=clientUser._id;
         return client
+    } catch (error) {
+        throw(error)
+    }
+}
+
+async function map_manpower_request(manpower,data){
+    try {
+        let manpowerUser=new User({});
+        let mappedManpowerUser=await(map_user_request(manpowerUser,data))
+        await(mappedManpowerUser.save())
+        manpower.user=mappedManpowerUser._id;
+        return manpower
     } catch (error) {
         throw(error)
     }
@@ -55,13 +66,13 @@ async function map_user_request(user,data){
         user.primaryContactNumber=primaryContactNumber._id
 
         if(data.contactNumbers!=null&&Array.isArray(data.contactNumbers)){
-            data.contactNumbers.forEach(element => {
+            for (const element of data.contactNumbers) {
                 let contactNumber=new ContactNumber({})
                 contactNumber.number=element;
                 contactNumber.isPrimary=false;
                 contactNumber= await(contactNumber.save())
                 user.contactNumbers.push(contactNumber._id)
-            });
+            }
         }
 
         if(data.gender!=null){
@@ -86,5 +97,6 @@ async function map_user_request(user,data){
 }
 
 module.exports={
-    map_client_request
+    map_client_request,
+    map_manpower_request
 }

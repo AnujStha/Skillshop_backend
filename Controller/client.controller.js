@@ -1,4 +1,5 @@
-const Client=require('../Model/Users/client.model')
+const Client=require('../Model/Users/client.model');
+const userModel = require('../Model/Users/user.models');
 const Utility=require('../Utility/mapper.utility')
 
 async function client_get(req,res,next){
@@ -34,18 +35,31 @@ async function client_post(req,res,next){
             })
         }
 
-        // if(client!=null){
-        //     //username already exists
-        //     return next({
-        //         msg:"username already exists",
-        //         status:400
-        //     })
-        // }
+        let client=await(userModel.findOne({userName:data.userName}))
+
+        if(client!=null){
+            console.log(client)
+            //username already exists
+            return next({
+                msg:"username already exists",
+                status:400
+            })
+        }
 
         let newClient=new Client({});
-        newClent= await(Utility.map_client_request(newClient,data))
+        newCilent= await(Utility.map_client_request(newClient,data))
         newClient= await(newClient.save())
-        res.status(200).json(await(newClient.execPopulate('user')))
+
+        //populate user and contents of user
+        res.status(200).json(await(newClient.execPopulate({
+            path:"user",
+            populate:[{
+                path:"primaryContactNumber"
+            },
+            {
+                path:"contactNumbers"
+            }]
+        })))
 
     } catch (error) {
         return next(error)
