@@ -19,5 +19,5 @@ var contactNumberSchema=new Schema({
 {
     timestamps:true
 })
-const contactNumber=Mongoose.model('contactNumber', contactNumberSchema);
-module.exports = contactNumber;
+// const contactNumber=Mongoose.model('contactNumber', contactNumberSchema);
+module.exports = contactNumberSchema;

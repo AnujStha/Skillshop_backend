@@ -1,10 +1,12 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
+const User=require("./user.model")
 
 let clientSchema=new Schema({
     user:{
-        type:Schema.Types.ObjectId,
-        ref:"user"
+        type:User,
+        default:()=>({}),
+        require:true
     },
     servicesReceived:[{
         type:Schema.Types.ObjectId,

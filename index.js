@@ -34,6 +34,8 @@ App.use(function(req,res,next){
 //handle errors
 App.use(function(error,req,res,next){
     console.log("Handled error: "+ error)
+    console.log("Handled error json: "+ JSON.stringify(error))
+
     res.status(error.status||400)
     .json({
         msg:error.msg||error,

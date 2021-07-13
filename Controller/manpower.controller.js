@@ -1,8 +1,21 @@
+const { json } = require('express');
 const Manpower=require('../Model/Users/manpower.model')
 const Utility=require('../Utility/mapper.utility')
 
 async function manpower_get(req,res,next){
-    res.send("from get manpower")
+    try{
+        let manpower = await(Manpower.findOne({"user.userName":req.params.manpowerUserName}));
+        if(manpower!=null){
+            res.status(200).json(manpower)
+        }else{
+            return next({
+                msg:"manpower not found",
+                status:404
+            })
+        }
+    }catch(e){
+        return next(e)
+    }
 }
 
 async function manpower_put(req,res,next){
@@ -30,23 +43,10 @@ async function manpower_post(req,res,next){
         //     })
         // }
 
-        let newManpower=new Manpower({});
+        let newManpower=new Manpower();
         newManpower= await(Utility.map_manpower_request(newManpower,data))
         newManpower= await(newManpower.save())
-
-        //populate user and contents of user
-        res.status(200).json(await(newManpower.execPopulate({
-            path:"user",
-            populate:[{
-                path:"primaryContactNumber"
-            },
-            {
-                path:"contactNumbers"
-            },
-            {
-                path:"availableJobs"
-            }]
-        })))
+        res.status(200).json(newManpower)
 
     } catch (error) {
         return next(error)
@@ -54,7 +54,19 @@ async function manpower_post(req,res,next){
 }
 
 async function manpower_delete(req,res,next){
-    res.send("from delete manpower")
+    try {
+        try {
+            let deletedUser= await(Manpower.findOneAndDelete({"user.userName":req.params.manpowerUserName}))
+            if(deletedUser==null){
+                return next({msg:"manpower not found",})
+            }
+            res.status(200).json(deletedUser);
+        } catch (error) {
+            return next(error);
+        }
+    } catch (error) {
+        return next(error)
+    }
 }
 
 async function manpower_login(req,res,next){

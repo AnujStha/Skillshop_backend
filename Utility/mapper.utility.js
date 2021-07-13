@@ -1,13 +1,10 @@
-const User=require('../Model/Users/user.models')
+const User=require('../Model/Users/user.model')
 const ContactNumber=require('../Model/Contacts/contactNumber.model')
 const ContactEmail=require('../Model/Contacts/email.model');
 
 async function map_client_request(client,data){
     try {
-        let clientUser=new User({});
-        let mappedClientUser=await(map_user_request(clientUser,data))
-        await(mappedClientUser.save())
-        client.user=clientUser._id;
+        client.user=await(map_user_request(client.user,data))
         return client
     } catch (error) {
         throw(error)
@@ -15,11 +12,14 @@ async function map_client_request(client,data){
 }
 
 async function map_manpower_request(manpower,data){
+
+
     try {
-        let manpowerUser=new User({});
-        let mappedManpowerUser=await(map_user_request(manpowerUser,data))
-        await(mappedManpowerUser.save())
-        manpower.user=mappedManpowerUser._id;
+        // let manpowerUser=new User({});
+        // let mappedManpowerUser=await(map_user_request(manpowerUser,data))
+        // await(mappedManpowerUser.save())
+        // manpower.user=mappedManpowerUser._id;
+        manpower.user=await(map_user_request(manpower.user,data));
         return manpower
     } catch (error) {
         throw(error)
@@ -28,6 +28,8 @@ async function map_manpower_request(manpower,data){
 
 async function map_user_request(user,data){
     try {
+
+        //verify required data
         if(data.userName==null||data.userName==""){
             throw({
                 msg:"invalid user name",
@@ -46,7 +48,14 @@ async function map_user_request(user,data){
                 status:400
             })
         }
+        if(data.permanentAddress==null){
+            throw({
+                msg:"permanent address required",
+                status:400
+            })
+        }
 
+        //required data entry
         user.userName=data.userName;
         if(data.firstName!=null){
             user.firstName=data.firstName;
@@ -59,19 +68,25 @@ async function map_user_request(user,data){
         }
         user.password=data.password;//should be encrypted
 
-        let primaryContactNumber=new ContactNumber({})
+        let primaryContactNumber=user.primaryContactNumber
         primaryContactNumber.number=data.primaryContactNumber;
         primaryContactNumber.isPrimary=true;
-        primaryContactNumber= await(primaryContactNumber.save())
-        user.primaryContactNumber=primaryContactNumber._id
+        // primaryContactNumber= await(primaryContactNumber.save())
+        // user.primaryContactNumber=primaryContactNumber._id
 
         if(data.contactNumbers!=null&&Array.isArray(data.contactNumbers)){
             for (const element of data.contactNumbers) {
-                let contactNumber=new ContactNumber({})
+                let contactNumber=user.contactNumbers.create();
                 contactNumber.number=element;
                 contactNumber.isPrimary=false;
-                contactNumber= await(contactNumber.save())
-                user.contactNumbers.push(contactNumber._id)
+                // contactNumber= await(contactNumber.save())
+                user.contactNumbers.push(contactNumber)
+            }
+        }
+
+        if(data.temporaryAddress!=null&&Array.isArray(data.temporaryAddress)){
+            for (const element of data.temporaryAddress) {
+                user.tempAddress.push(element)
             }
         }
 
@@ -80,10 +95,10 @@ async function map_user_request(user,data){
         }
 
         if(data.email!=null){
-            let email=new ContactEmail({})
-            email.email=data.email;
-            email=email.save()
-            user.email=email._id;
+            // let email=new ContactEmail({})
+            // email.email=data.email;
+            // email=email.save()
+            user.email={email:data.email}
         }
 
         if(data.dob!=null){

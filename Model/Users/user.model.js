@@ -1,6 +1,8 @@
 
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
+const ContactNumber=require("../Contacts/contactNumber.model")
+const Email=require('../Contacts/email.model')
 
 let userSchema = new Schema(
   {
@@ -17,17 +19,18 @@ let userSchema = new Schema(
       type: String
     },
     permanentAddress: {
-      type: String
+      type: String,
+      require:true
     },
     tempAddress: [String],
     primaryContactNumber: {
-      type:Schema.Types.ObjectId,
-      ref:"contactNumber",
-      require:true
+      type:ContactNumber,
+      require:true,
+      default:()=>({})
     },
     contactNumbers:[{
-      type:Schema.Types.ObjectId,
-      ref:"contactNumber"
+      type:ContactNumber,
+      default:()=>([])
     }],
     gender: {
       type: String,
@@ -35,9 +38,7 @@ let userSchema = new Schema(
       default:"notSpecified"
     },
     email: {
-      type: String,
-      unique: true,
-      sparse: true
+      type: Email,
     },
     dob: Date,
     active: {
@@ -54,5 +55,5 @@ let userSchema = new Schema(
     timestamps: true
   }
 );
-const userModel = Mongoose.model("user", userSchema);
-module.exports = userModel;
+// const userModel = Mongoose.model("user", userSchema);
+module.exports = userSchema;
