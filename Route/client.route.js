@@ -1,10 +1,11 @@
 const Router=require('express').Router();
 const ClientController=require('../Controller/client.controller')
+const clientAuth=require('./../Middlewares/authenticateClientToken.middleware')
 
 Router
 .route('/:clientUserName')
 .get(ClientController.client_get)
-.put(ClientController.client_put)
-.delete(ClientController.client_delete)
+.put(clientAuth,ClientController.client_put)
+.delete(clientAuth,ClientController.client_delete)
 
 module.exports=Router;

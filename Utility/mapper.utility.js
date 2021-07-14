@@ -15,10 +15,6 @@ async function map_manpower_request(manpower,data){
 
 
     try {
-        // let manpowerUser=new User({});
-        // let mappedManpowerUser=await(map_user_request(manpowerUser,data))
-        // await(mappedManpowerUser.save())
-        // manpower.user=mappedManpowerUser._id;
         manpower.user=await(map_user_request(manpower.user,data));
         return manpower
     } catch (error) {
@@ -28,35 +24,10 @@ async function map_manpower_request(manpower,data){
 
 async function map_user_request(user,data){
     try {
-
-        //verify required data
-        if(data.userName==null||data.userName==""){
-            throw({
-                msg:"invalid user name",
-                status:400
-            })
-        }
-        if(data.password==null){
-            throw({
-                msg:"password required",
-                status:400
-            })
-        }
-        if(data.primaryContactNumber==null){
-            throw({
-                msg:"primary contact nmber required",
-                status:400
-            })
-        }
-        if(data.permanentAddress==null){
-            throw({
-                msg:"permanent address required",
-                status:400
-            })
-        }
-
         //required data entry
-        user.userName=data.userName;
+        if(data.userName!=null){
+            user.userName=data.userName;
+        }
         if(data.firstName!=null){
             user.firstName=data.firstName;
         }
@@ -66,22 +37,30 @@ async function map_user_request(user,data){
         if(data.lastName!=null){
             user.lastName=data.lastName
         }
-        user.password=data.password;//should be encrypted
+        if(data.passwordHash!=null){
+            user.passwordHash=data.passwordHash;//should be encrypted
+        }
 
-        let primaryContactNumber=user.primaryContactNumber
-        primaryContactNumber.number=data.primaryContactNumber;
-        primaryContactNumber.isPrimary=true;
-        // primaryContactNumber= await(primaryContactNumber.save())
-        // user.primaryContactNumber=primaryContactNumber._id
+        if(data.primaryContactNumber!=null){
+            let primaryContactNumber=user.primaryContactNumber
+            primaryContactNumber.number=data.primaryContactNumber;
+            primaryContactNumber.isPrimary=true;
+            primaryContactNumber.isValidated=false;
+        }
 
         if(data.contactNumbers!=null&&Array.isArray(data.contactNumbers)){
             for (const element of data.contactNumbers) {
                 let contactNumber=user.contactNumbers.create();
                 contactNumber.number=element;
                 contactNumber.isPrimary=false;
+                contactNumber.isValidated=false;
                 // contactNumber= await(contactNumber.save())
                 user.contactNumbers.push(contactNumber)
             }
+        }
+
+        if(data.permanentAddress!=null){
+            user.permanentAddress=data.permanentAddress;
         }
 
         if(data.temporaryAddress!=null&&Array.isArray(data.temporaryAddress)){

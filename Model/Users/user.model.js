@@ -9,20 +9,25 @@ let userSchema = new Schema(
     userName: {
       unique: true,
       require: true,
-      type: String
+      type: String,
     },
     firstName: String,
     middleName:String,
     lastName: String,
-    password: {
-      required: true,
+    passwordHash: {
+      require: true,
       type: String
     },
     permanentAddress: {
       type: String,
-      require:true
+      required:true,
     },
     tempAddress: [String],
+    gender: {
+      type: String,
+      default:"notSpecified",
+      enum: ["male", "female", "others","notSpecified"],
+    },
     primaryContactNumber: {
       type:ContactNumber,
       require:true,
@@ -32,11 +37,6 @@ let userSchema = new Schema(
       type:ContactNumber,
       default:()=>([])
     }],
-    gender: {
-      type: String,
-      enum: ["male", "female", "others","notSpecified"],
-      default:"notSpecified"
-    },
     email: {
       type: Email,
     },
