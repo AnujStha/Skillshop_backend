@@ -1,4 +1,4 @@
-const service=require('../Model/Jobs/service.model')
+const service=require('../Model/JobsAndServices/service.model')
 
 async function service_get(req,res,next){
     res.send("from get service")

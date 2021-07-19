@@ -46,14 +46,23 @@ async function map_user_request(user,data){
             primaryContactNumber.isValidated=false;
         }
 
-        if(data.contactNumbers!=null&&Array.isArray(data.contactNumbers)){
-            for (const element of data.contactNumbers) {
+        if(data.contactNumbers!=null){
+            if(Array.isArray(data.contactNumbers)){
+                for (const element of data.contactNumbers) {
+                    let contactNumber=user.contactNumbers.create();
+                    contactNumber.number=element;
+                    contactNumber.isPrimary=false;
+                    contactNumber.isValidated=false;
+                    // contactNumber= await(contactNumber.save())
+                    user.contactNumbers.push(contactNumber)
+                }
+            }else{
                 let contactNumber=user.contactNumbers.create();
-                contactNumber.number=element;
-                contactNumber.isPrimary=false;
-                contactNumber.isValidated=false;
-                // contactNumber= await(contactNumber.save())
-                user.contactNumbers.push(contactNumber)
+                    contactNumber.number=data.contactNumbers;
+                    contactNumber.isPrimary=false;
+                    contactNumber.isValidated=false;
+                    // contactNumber= await(contactNumber.save())
+                    user.contactNumbers.push(contactNumber)
             }
         }
 

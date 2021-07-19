@@ -1,5 +1,6 @@
 const MONGOOSE = require("mongoose");
 const SCHEMA = MONGOOSE.Schema;
+const ReviewSchema=require('./../ReviewAndComments/review.model')
 
 let serviceHistory=new SCHEMA({
     job:{
@@ -8,7 +9,7 @@ let serviceHistory=new SCHEMA({
     },
     status:{
         type:String,
-        enum:['running','pending','completed','cancelled']
+        enum:['running','pending','completed','cancelled','waitingAccept']
     },
     manpower:{
         type:SCHEMA.Types.ObjectId,
@@ -19,8 +20,7 @@ let serviceHistory=new SCHEMA({
         ref:"client"
     },
     review:{
-        type:SCHEMA.Types.ObjectId,
-        ref:"review"
+        type:ReviewSchema,
     }
 })
 module.exports = mongoose.model('serviceHistory', serviceHistory);

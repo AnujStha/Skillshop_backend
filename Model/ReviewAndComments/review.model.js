@@ -13,4 +13,4 @@ let reviewSchema=new SCHEMA({
         max:5
     },
 })
-module.exports = Mongoose.model('review', reviewSchema);
+module.exports = reviewSchema;
