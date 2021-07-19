@@ -12,8 +12,6 @@ async function map_client_request(client,data){
 }
 
 async function map_manpower_request(manpower,data){
-
-
     try {
         manpower.user=await(map_user_request(manpower.user,data));
         return manpower
@@ -38,7 +36,7 @@ async function map_user_request(user,data){
             user.lastName=data.lastName
         }
         if(data.passwordHash!=null){
-            user.passwordHash=data.passwordHash;//should be encrypted
+            user.passwordHash=data.passwordHash;
         }
 
         if(data.primaryContactNumber!=null){
@@ -89,8 +87,17 @@ async function map_user_request(user,data){
         throw(error)
     }
 }
+async function map_admin_request(admin,data){
+    try {
+        admin.user=await(map_user_request(admin.user,data));
+        return admin
+    } catch (error) {
+        throw(error)
+    }
+}
 
 module.exports={
     map_client_request,
-    map_manpower_request
+    map_manpower_request,
+    map_admin_request
 }
