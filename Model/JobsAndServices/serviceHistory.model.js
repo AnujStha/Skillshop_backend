@@ -1,8 +1,7 @@
 const MONGOOSE = require("mongoose");
 const SCHEMA = MONGOOSE.Schema;
-const ReviewSchema=require('./../ReviewAndComments/review.model')
 
-let serviceHistory=new SCHEMA({
+let serviceHistorySchema=new SCHEMA({
     job:{
         type:SCHEMA.Types.ObjectId,
         ref:'job'
@@ -19,8 +18,12 @@ let serviceHistory=new SCHEMA({
         type:SCHEMA.Types.ObjectId,
         ref:"client"
     },
-    review:{
-        type:ReviewSchema,
-    }
+    review:String,
+    rating:{
+        type:Number,
+        min:1,
+        max:5
+    },
 })
-module.exports = mongoose.model('serviceHistory', serviceHistory);
+let serviceHistory=MONGOOSE.model('serviceHistory', serviceHistorySchema);
+module.exports = serviceHistory;

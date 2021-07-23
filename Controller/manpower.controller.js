@@ -57,10 +57,9 @@ async function manpower_put(req,res,next){
 async function manpower_post(req,res,next){
     try {
         let data=req.body;
-        console.log("data:"+JSON.stringify(data))
         //todo check user name for unique
 
-       
+       console.log(data)
         //verify required data
         if(data.userName==null||data.userName==""){
             throw({
@@ -139,7 +138,6 @@ async function manpower_login(req,res,next){
                 userType:"manpower",
                 _id:manpower._id
             }
-            console.log(payload)
             JsonWebToken.sign(payload,config.JsonWebTokenSecret,function(err,token){
                 if(err){
                     throw(err)

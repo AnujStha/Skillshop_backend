@@ -1,6 +1,7 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 const User=require("./user.model")
+const AvailableServices=require("../JobsAndServices/availableService.model")
 
 let manpowerSchema=new Schema({
     user:{
@@ -24,7 +25,7 @@ let manpowerSchema=new Schema({
     availableLocations:[String],
     availableJobs:[{
         type:Schema.Types.ObjectId,
-        ref:'availableJob'
+        ref:'job'
     }]
 })
 const ManpowerModel=Mongoose.model('manpower', manpowerSchema);

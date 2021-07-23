@@ -104,7 +104,6 @@ async function client_post(req,res,next){
 
 async function client_delete(req,res,next){
     try {
-        console.log(req.params.clientUserName)
         let deletedUser= await(Client.findOneAndDelete({"user.userName":req.params.clientUserName}))
         if(deletedUser==null){
             return next({msg:"client not found"})
@@ -139,7 +138,6 @@ async function client_login(req,res,next){
                 userType:"client",
                 _id:client._id
             }
-            console.log(payload)
             JsonWebToken.sign(payload,config.JsonWebTokenSecret,function(err,token){
                 if(err){
                     throw(err)

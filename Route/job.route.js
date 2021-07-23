@@ -1,13 +1,17 @@
 const Router=require('express').Router();
-const Job=require('../Controller/job.controller')
-const AuthenticateAdminToken=require('../Middlewares/authenticateAdminToken.middleware')
+const Job=require('../Controller/job.controller');
+const authenticateClientTokenMiddleware = require('../Middlewares/authenticateClientToken.middleware');
+const authenticateManpowerTokenMiddleware = require('../Middlewares/authenticateManpowerToken.middleware');
 
-Router.route('/:jobName')
+Router.route('/request')
+.post(authenticateClientTokenMiddleware,Job.job_request)
+
+Router.route('/:id')
 .get(Job.job_get)
-.put(AuthenticateAdminToken,Job.job_put)
-.delete(AuthenticateAdminToken,Job.job_delete)
+.put(authenticateManpowerTokenMiddleware,Job.job_put)
+.delete(authenticateManpowerTokenMiddleware,Job.job_delete)
 
 Router.route('/')
-.post(AuthenticateAdminToken,Job.job_post)
+.post(authenticateManpowerTokenMiddleware,Job.job_post)
 
 module.exports=Router

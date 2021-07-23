@@ -104,7 +104,6 @@ async function admin_post(req,res,next){
 
 async function admin_delete(req,res,next){
     try {
-        console.log(req.params.adminUserName)
         let deletedUser= await(Admin.findOneAndDelete({"user.userName":req.params.adminUserName}))
         if(deletedUser==null){
             return next({msg:"admin not found"})
@@ -139,7 +138,6 @@ async function admin_login(req,res,next){
                 userType:"client",
                 _id:admin._id
             }
-            console.log(payload)
             JsonWebToken.sign(payload,config.JsonWebTokenSecret,function(err,token){
                 if(err){
                     throw(err)

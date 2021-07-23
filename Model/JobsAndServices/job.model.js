@@ -1,18 +1,32 @@
+
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 
 var jobSchema=new Schema({
+    manpower:{
+        type:Schema.Types.ObjectId,
+        ref:'manpower',
+        require:true
+    },
     jobName:{
         type:String,
         require:true,
-        unique:true
     },
     jobCategory:{
         type:String,
-        require:true,
         default:"uncategorized"
     },
-    tags:[String]
+    tags:[String],
+    price:{
+        type:Number,
+        require:true
+    },
+    priceType:{
+        type:String,
+        require:true,
+        enum:['hourly','daily','total']
+    }
 })
-let jobModel=Mongoose.model('job', jobSchema);
+
+let jobModel=Mongoose.model('job',jobSchema)
 module.exports = jobModel;

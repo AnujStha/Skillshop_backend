@@ -1,24 +1,94 @@
-const service=require('../Model/JobsAndServices/service.model')
+const Manpower =require("./../Model/Users/manpower.model")
+const Service=require("./../Model/JobsAndServices/serviceHistory.model")
 
 async function service_get(req,res,next){
-    res.send("from get service")
+    let services=await(Manpower.find({"availableServices":req.query}))
+    res.status(200).json(services)
 }
 
-async function service_put(req,res,next){
-    res.send("from put service")
+async function service_manpower_get(req,res,next){
+    try {
+        let manpower=req.loggedInManpower;
+
+        let service=await(Service.findOne({_id:req.body.serviceId,manpower:manpower._id}))
+        if(!service){
+            return next({
+                msg:"service not found"
+            })
+        }
+        res.status(200).json(service)
+    } catch (e) {
+        return next(e)
+    }
 }
 
-async function service_post(req,res,next){
-    res.send("from post service")
+async function service_manpower_put(req,res,next){
+    try {
+        let manpower=req.loggedInManpower;
+        let service=await(Service.findOne({_id:req.body.serviceId,manpower:manpower._id}))
+        let data=req.body;
+        if(data.status){
+            service.status=data.status;
+        }
+    
+        service=await(service.save())
+        if(!service){
+            return next({
+                msg:"failed to update data"
+            })
+        }
+        res.status(200).json(service)
+    } catch (e) {
+        return next(e)
+    }
 }
 
-async function service_delete(req,res,next){
-    res.send("from delete service")
+async function service_client_get(req,res,next){
+    try {
+        let client=req.loggedInClient;
+    
+        let service=await(Service.findOne({_id:req.body.serviceId,client:client._id}))
+        if(!service){
+            return next({
+                msg:"service not found"
+            })
+    }
+    res.status(200).json(service)
+    } catch (e) {
+        return next (e)
+    }
+}
+
+async function service_client_put(req,res,next){
+    try {
+        let client=req.loggedInClient;
+    let service=await(Service.findOne({_id:req.body.serviceId,client:client._id}))
+    let data=req.body;
+    if(data.status){
+        service.status=data.status;
+    }
+    if(data.review){
+        service.review=data.review
+    }
+    if(data.rating){
+        service.rating=data.rating
+    }
+
+    service=await(service.save())
+    if(!service){
+        return next({
+            msg:"failed to update data"
+        })
+    }
+    res.status(200).json(service)  
+    } catch (e) {
+        return next(e)
+    }
 }
 
 module.exports={
-    service_get,
-    service_put,
-    service_post,
-    service_delete
+    service_client_get,
+    service_client_put,
+    service_manpower_get,
+    service_manpower_put
 }
