@@ -38,14 +38,12 @@ async function map_user_request(user,data){
         if(data.passwordHash!=null){
             user.passwordHash=data.passwordHash;
         }
-
         if(data.primaryContactNumber!=null){
             let primaryContactNumber=user.primaryContactNumber
             primaryContactNumber.number=data.primaryContactNumber;
             primaryContactNumber.isPrimary=true;
             primaryContactNumber.isValidated=false;
         }
-
         if(data.contactNumbers!=null){
             if(Array.isArray(data.contactNumbers)){
                 for (const element of data.contactNumbers) {
@@ -89,6 +87,10 @@ async function map_user_request(user,data){
 
         if(data.dob!=null){
             user.dob=data.dob
+        }
+        if(data.images){
+            user.images=data.images
+            console.log("here")
         }
         return user;
 

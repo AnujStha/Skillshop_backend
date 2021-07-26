@@ -7,7 +7,7 @@ const config = require('../Config/config');
 
 async function client_get(req,res,next){
     try{
-        let client = await(Client.findOne({"user.userName":req.params.clientUserName}));
+        let client = await(Client.findById(req.params.id));
         if(client!=null){
             res.status(200).json(client)
         }else{
@@ -24,9 +24,9 @@ async function client_get(req,res,next){
 async function client_put(req,res,next){
     try {
         let data=req.body;
-        let userName=req.params.clientUserName;
-        let client=await(Client.findOne({"user.userName":userName}))
-        
+        let userId=req.params.id;
+        let client=await(Client.findById(userId))
+        console.log(userId)
         if(client==null){
             return next({
                 msg:"user not found"
@@ -90,6 +90,10 @@ async function client_post(req,res,next){
             })
         }
 
+        if(req.file){
+            data.images=req.file.filename
+        }
+
         let newClient=new Client({});
         newCilent= await(Utility.map_client_request(newClient,data))
         newClient= await(newClient.save())
@@ -143,12 +147,17 @@ async function client_login(req,res,next){
                     throw(err)
                 }else{
                     res.status(200).json({
+                        userId:client._id,
                         userName:client.user.userName,
                         token:token
                     })
                 }
             })
     
+        }else{
+            return next({
+                msg:"password or user name doesn't match"
+            })
         }
     } catch (error) {
         return next(error)

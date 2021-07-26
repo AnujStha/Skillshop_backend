@@ -7,7 +7,8 @@ let manpowerSchema=new Schema({
     user:{
         type:User,
         default:()=>({}),
-        require:true
+        require:true,
+        unique:true
     },
     servicesProvided:{
         type:Schema.Types.ObjectId,

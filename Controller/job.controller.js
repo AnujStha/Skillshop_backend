@@ -7,6 +7,12 @@ async function job_get(req,res,next){
         let searchCondition={};
         if(body.jobName!=null){
             searchCondition.jobName=body.jobName
+        }else if(req.params.jobName){
+            searchCondition.jobName=req.params.jobName
+        }else if(req.params.manpowerId){
+            searchCondition.manpower=req.params.manpowerId
+        }else if(req.params.id){
+            searchCondition._id=req.params.id
         }
 
         if (req.body.minPrice) {
@@ -34,7 +40,7 @@ async function job_get(req,res,next){
         }
 
 
-        let job=await(Job.find(searchCondition,req.query))
+        let job=await(Job.find(searchCondition,req.query).populate('manpower'))
 
         if(job==null){
             return next({
@@ -47,6 +53,42 @@ async function job_get(req,res,next){
     } catch (e) {
         return next(e)
     }
+}
+
+async function job_my_get(req,res,next){
+    try {
+        if(!req.loggedInManpower){
+            return next({
+                msg:"no token"
+            })
+        }
+
+        console.log("manpower",req.loggedInManpower)
+
+        let job=await(Job.find({manpower:req.loggedInManpower._id},req.query).populate('manpower'))
+
+        if(job==null){
+            return next({
+                msg:"job not found",
+                status:400
+            })
+        }
+    
+        res.status(200).json(job)
+    } catch (e) {
+        return next(e)
+    }
+}
+
+async function job_manpower_get(req,res,next){
+    if(!req.params.id){
+        return next({
+            msg:"manpower id not found" 
+        })
+    }
+        let jobs=await(Job.find({manpower:req.params.id}))
+        res.status(200).json(jobs);
+
 }
 
 async function job_put(req,res,next){
@@ -223,6 +265,7 @@ async function job_request(req,res,next){
         let service=new Service();
         service.client=req.loggedInClient._id;
         service.manpower=job.manpower;
+        service.job=job._id;
         service.status='waitingAccept'
         service=await(service.save())
 
@@ -242,5 +285,7 @@ module.exports={
     job_put,
     job_post,
     job_delete,
-    job_request
+    job_request,
+    job_my_get,
+    job_manpower_get
 }

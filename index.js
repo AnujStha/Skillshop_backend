@@ -1,12 +1,14 @@
 const Express=require("express")
 const Morgan = require("morgan")
 const App=Express()
+const path=require('path')
 const cors=require('cors')
 require('dotenv').config()
 
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/'+process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://localhost:27017/'+process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://callingsandesh:callingsandesh@cluster0.ho5xw.mongodb.net/skill_shop?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
 
 App.use(Morgan('dev'));
 App.use(cors())
@@ -21,6 +23,9 @@ App.use(Express.json())
 
 //routers
 const Api=require('./Route/api.route')
+App.use(Express.static('files')); // internal serve within express
+App.use("/file", Express.static(path.join(__dirname, 'uploads')));
+
 App.use('/api',Api);
 
 //handle 404 error

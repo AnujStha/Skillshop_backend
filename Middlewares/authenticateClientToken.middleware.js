@@ -17,6 +17,7 @@ module.exports=function(req,res,next){
     if (req.query.token) {
         token = req.query.token;
     }
+    console.log("Here",req.headers)
     if(token){
         JWT.verify(token,config.JsonWebTokenSecret,(err,payload)=>{
             if(err){

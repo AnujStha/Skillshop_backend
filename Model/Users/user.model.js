@@ -51,9 +51,11 @@ let userSchema = new Schema(
     },
     images: String,
   },
+
   {
     timestamps: true
-  }
+  },
+
 );
 // const userModel = Mongoose.model("user", userSchema);
 module.exports = userSchema;

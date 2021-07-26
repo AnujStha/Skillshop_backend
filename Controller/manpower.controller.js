@@ -6,7 +6,7 @@ const config=require('./../Config/config')
 
 async function manpower_get(req,res,next){
     try{
-        let manpower = await(Manpower.findOne({"user.userName":req.params.manpowerUserName}));
+        let manpower = await(Manpower.findById(req.params.id));
         if(manpower!=null){
             res.status(200).json(manpower)
         }else{
@@ -23,8 +23,8 @@ async function manpower_get(req,res,next){
 async function manpower_put(req,res,next){
     try {
         let data=req.body;
-        let userName=req.params.manpowerUserName;
-        let manpower=await(Manpower.findOne({"user.userName":userName}))
+        let id=req.params.id;
+        let manpower=await(Manpower.findById(id))
         if(manpower==null){
             return next({
                 msg:"user not found"
@@ -88,6 +88,10 @@ async function manpower_post(req,res,next){
             })
         }
 
+        if(req.file){
+            data.images=req.file.filename
+        }
+
         let newManpower=new Manpower();
         newManpower= await(Mapper.map_manpower_request(newManpower,data))
         newManpower= await(newManpower.save())
@@ -143,12 +147,17 @@ async function manpower_login(req,res,next){
                     throw(err)
                 }else{
                     res.status(200).json({
+                        userId:manpower._id,
                         userName:manpower.user.userName,
                         token:token
                     })
                 }
             })
     
+        }else{
+            return next({
+                msg:"password or user name doesn't match"
+            })
         }
     } catch (error) {
         return next(error)

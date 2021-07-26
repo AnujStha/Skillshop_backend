@@ -6,6 +6,18 @@ const authenticateManpowerTokenMiddleware = require('../Middlewares/authenticate
 Router.route('/request')
 .post(authenticateClientTokenMiddleware,Job.job_request)
 
+Router.route('/my/')
+.get(authenticateManpowerTokenMiddleware,Job.job_my_get)
+
+Router.route('/search/')
+.get(Job.job_get)
+
+Router.route('/search/:jobName')
+.get(Job.job_get)
+
+Router.route('/manpower/:id')
+.get(Job.job_manpower_get)
+
 Router.route('/:id')
 .get(Job.job_get)
 .put(authenticateManpowerTokenMiddleware,Job.job_put)
